@@ -8,5 +8,6 @@ CREATE TABLE `crudApi`.`usuario` (
   `idade` INT NULL,
   `cep` VARCHAR (8) NULL,
   `endereco` VARCHAR (20) NULL,
+  `numero`INT NULL,
   PRIMARY KEY (`id`, `cpf`),
   UNIQUE INDEX `cpf_UNIQUE` (`cpf` ) );
