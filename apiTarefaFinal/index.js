@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
+import { encontrarCEP } from './encontrarCEP';
 
 const app = express();
 app.disable("x-powered-by");
