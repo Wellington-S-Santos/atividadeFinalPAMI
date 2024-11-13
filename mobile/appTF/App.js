@@ -5,24 +5,28 @@ import { useState, useEffect } from 'react';
 import { encontrarCEP } from './utils/api';
 
 
-const API_url = 'http://172.16.7.19:3000/usuarios';
+const API_url = 'http://localhost:3000/usuarios';
 
 const UsuariosItem = ({ usuarios, onDelete, onEdit }) => {
   return (
     <View style={styles.usuariosItem}>
-      <Text style={styles.usuariosName}>{usuarios.nome}</Text>
-      <Text style={styles.usuariosCpf}>{usuarios.cpf}</Text>
-      <Text style={styles.usuariosIdade}>{usuarios.idade}</Text>
-      <Text style={styles.usuariosEndereco}>{usuarios.endereco}</Text>
-      <View style={styles.usuariosActions}>
-        <TouchableOpacity style={styles.button} onPress={() => onEdit(usuarios)}>
-          <Text style={styles.buttonText}>Editar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => onDelete(usuarios.id)}>
-          <Text style={styles.buttonText}>Excluir</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+  <View style={styles.usuariosDetails}>
+    <Text style={styles.usuariosName}>Nome: {usuarios.nome}</Text>
+    <Text style={styles.usuariosCpf}>CPF: {usuarios.cpf}</Text>
+    <Text style={styles.usuariosIdade}>Idade: {usuarios.idade}</Text>
+    <Text style={styles.usuariosEndereco}>Endereço: {usuarios.endereco}, CEP: {usuarios.cep}</Text>
+    
+  </View>
+
+  <View style={styles.usuariosActions}>
+    <TouchableOpacity style={styles.button} onPress={() => onEdit(usuarios)}>
+      <Text style={styles.buttonText}>Editar</Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.button} onPress={() => onDelete(usuarios.id)}>
+      <Text style={styles.buttonText}>Excluir</Text>
+    </TouchableOpacity>
+  </View>
+</View>
   );
 };
 
@@ -58,7 +62,7 @@ const UsuariosForm = ({ usuarios, onSave, onCancel }) => {
       nome: name,
       idade,
       cep,
-      endereco: `${logradouro}, ${numero}, ${bairro}, ${cidade} - ${uf}`,
+      endereco: `${logradouro}, Nº: ${numero}, Bairro: ${bairro}, Cidade: ${cidade} - ${uf}`,
     };
 
     if (usuarios) {
@@ -183,7 +187,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>CRUD API com React Native USUARIOS</Text>
+      <Text style={styles.title}> Usuários</Text>
       {showForm ? (
         <UsuariosForm
           usuarios={selectedUsuarios}
@@ -216,7 +220,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#D8D8D8',
+    backgroundColor: '#79A9E4',
   },
   title: {
     fontSize: 24,
@@ -226,45 +230,77 @@ const styles = StyleSheet.create({
   },
   usuariosItem: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start', // Alinha o conteúdo no topo
     padding: 10,
     marginVertical: 5,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#B6D0FF',
     borderRadius: 10,
+    marginLeft: 10,
+    flexWrap: 'wrap', // Permite que o conteúdo quebre para a próxima linha
   },
   usuariosName: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#000',
+    flex: 1, // Ocupa o máximo de espaço disponível antes dos botões
   },
-  usuariosActions: {
-    flexDirection: 'row',
-    marginLeft: 10,
+  usuariosIdade: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  usuariosCpf: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  usuariosCep: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  usuariosEndereco: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#000',
+    flexWrap: 'wrap', // Permite quebra de linha
+    marginVertical: 2, // Ajuste do espaçamento para visualização do endereço
+    width: '100%', // Garantir que ocupe toda a largura
   },
   usuariosForm: {
-    padding: 10,
+    padding: 5,
     marginVertical: 5,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#B6D0FF',
     borderRadius: 10,
   },
   input: {
     height: 40,
-    borderColor: '#FF0000',
+    borderColor: '#FFFFFF',
     borderWidth: 1,
     marginVertical: 5,
     paddingHorizontal: 10,
   },
   formActions: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-around',
     marginVertical: 10,
   },
+  usuariosDetails: {
+    flex: 1, // Ocupa o espaço necessário antes dos botões
+    paddingRight: 10,
+  },
+  usuariosActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end', // Alinha os botões à direita
+    alignItems: 'center', // Alinha os botões verticalmente
+  },
   button: {
-    backgroundColor: '#FF0000',
+    backgroundColor: '#4F69E6',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 8,
     margin: 10,
   },
   buttonText: {

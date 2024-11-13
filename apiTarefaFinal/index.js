@@ -2,12 +2,14 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-import { encontrarCEP } from './encontrarCEP';
+const cors = require('cors'); // Importa o cors
 
 const app = express();
 app.disable("x-powered-by");
 
+app.use(cors()); // Aplica o cors a todas as rotas
 app.use(express.json());
+
 const pool = mysql.createPool({
   host: '127.0.0.1',
   user: 'root',
@@ -140,7 +142,7 @@ app.get('/usuarios', async (req, res) => {
 app.post('/usuarios', async (req, res) => {
   try {
     const { cpf, nome, idade, cep, endereco } = req.body;
-    const [result] = await pool.query('INSERT INTO usuario (cpf,nome,idade,cep,endereco) VALUES (?, ?, ?)', [cpf,nome, idade,cep,endereco]);
+    const [result] = await pool.query('INSERT INTO usuario (cpf, nome, idade, cep, endereco) VALUES (?, ?, ?, ?, ?)', [cpf, nome, idade, cep, endereco]);
     res.json({ id: result.insertId, cpf:cpf, nome:nome, idade:idade, cep:cep, endereco:endereco});
   } catch (error) {
     console.error("Erro ao criar usuarios:", error);
@@ -152,7 +154,7 @@ app.put('/usuarios/:id', async (req, res) => {
   try {
     const { cpf, nome, idade, cep, endereco} = req.body;
     const { id } = req.params;
-    await pool.query('UPDATE usuario SET cpf = ? , nome = ?, idade = ? , cpf = ? , endereco = ? WHERE id = ?', [cpf, nome, idade, cep, endereco, id]);
+    await pool.query('UPDATE usuario SET cpf = ?, nome = ?, idade = ?, cep = ?, endereco = ? WHERE id = ?', [cpf, nome, idade, cep, endereco, id]);
     res.status(200).json({id: id, cpf:cpf, nome:nome, idade:idade, cep:cep, endereco:endereco });
   } catch (error) {
     console.error("Erro ao atualizar usuarios:", error);
